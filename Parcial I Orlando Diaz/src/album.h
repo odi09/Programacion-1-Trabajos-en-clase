@@ -66,5 +66,9 @@ int listarAlbumesDeCdaArtista(eAlbum albumes[],int tam, eArtista artista[], int 
 int recorrerArrayAlbum(eAlbum albumes[],int tam);
 int buscarAlbumConMayorImpor(eAlbum albumes[],int tam);
 int listarImporMaximos(eAlbum albumes[],int tam);
+int ordenamientoAlbum(eAlbum albumes[],int tam);
+//int ordenamientoAscendentedeTitulos(eAlbum albumes[],int tam);
+int listarAlbumeseImporte(eAlbum albumes[],int tam);
+
 
 #endif /* ALBUM_H_ */

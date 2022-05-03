@@ -135,10 +135,22 @@ int main(void) {
 				}while(subMenu != 8);
 				break;
 			case 5:
-				listarAlbumesDeCdaArtista(album,TAM1,artista,TAM2);
-				listarGeneros(genero,TAM2);
-				listarTiposDeArtista(tipo,2);
-				listarArtistas(artista,TAM2);
+				if(listarAlbumesDeCdaArtista(album,TAM1,artista,TAM2)!=1)
+				{
+					printf("No se puede Listar los Arbumes con sus Artistas.\n");
+				}
+				if(listarGeneros(genero,TAM2)!=1)
+				{
+					printf("No se puede Listar los Generos.\n");
+				}
+				if(listarTiposDeArtista(tipo,2)!=1)
+				{
+					printf("No se puede Listar los Tipos de Artistas.\n");
+				}
+				if(listarArtistas(artista,TAM2)!=1)
+				{
+					printf("No se puede Listar los Artistas.\n");
+				}
 				if(alta==1)
 				{
 					if(listarAlbumes(album,TAM1)!=1)
@@ -160,7 +172,15 @@ int main(void) {
 							printf("No se encontro Albumes publicado ese año.\n");
 						}
 					}
-					listarImporMaximos(album,TAM1);
+					if(listarImporMaximos(album,TAM1)!=1)
+					{
+						printf("No se puede Listar los Importe Maximos.\n");
+					}
+					//listarAlbumeseImporte(album,TAM1);
+					if(listarAlbumeseImporte(album,TAM1))
+					{
+						printf("No se puede Listar los Importe de manera Descendente.\n");
+					}
 				}
 				else
 				{

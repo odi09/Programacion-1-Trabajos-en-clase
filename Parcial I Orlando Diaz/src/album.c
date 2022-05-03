@@ -602,24 +602,24 @@ int recorrerArrayAlbum(eAlbum albumes[],int tam)
 int listarAlbumesDeCdaArtista(eAlbum albumes[],int tam, eArtista artista[], int tam1)
 {
 	int retorno=0;
-	int id;
+	//int id;
 	if(albumes!=NULL && tam>0 && artista!=NULL && tam1>0)
 		{
 		printf("Lista de Albumes de cada Artista:\n");
-			/*for(int i = 0; i < tam; i++)
+			for(int i = 0; i < tam; i++)
 			{
 				if(albumes[i].estado==!LIBRE)
-				{*/id=recorrerArrayAlbum(albumes,tam);
+				{///id=recorrerArrayAlbum(albumes,tam);
 					for(int j=0; j<tam1; j++)
 					{
-						if(albumes[id].idArtis==artista[j].idArtista)
+						if(albumes[i].idArtis==artista[j].idArtista)
 						{
-							printf("  %s- Album %s.\n",artista[j].nombreArtista,albumes[id ].nombreAlbum);
+							printf("  %s- Album %s.\n",artista[j].nombreArtista,albumes[i].nombreAlbum);
 						}
 						retorno = 1;
                    }
-				//}
-			//}
+				}
+			}
 		}
 	return retorno;
 }
@@ -672,6 +672,108 @@ int listarImporMaximos(eAlbum albumes[],int tam)
 		}
 	}
 	return retorno;
+}
+/**\brief Realiza el ordenamiento de los Importe de forma Descendente.
+ * param album[] La direccion de memoria del array que se le pasa a la funcion.
+ * param tam Es el tamaño del array album[].
+ * param retorno  Retorna 1 si sale todo bien y 0 si No lo logra.
+ */
+int ordenamientoAlbum(eAlbum albumes[],int tam)
+{
+	int retorno = 0;
+	int flagSwap;
+	eAlbum buffer;
+
+	if(albumes!=NULL && tam>0 )
+	{
+		retorno = 1;
+		do
+		{
+		flagSwap = 0;
+		tam--;
+			for(int i=0; i<tam; i++)
+			{
+				if(albumes[i].importe < albumes[i+1].importe)
+				{
+					buffer = albumes[i];
+					albumes[i]=albumes[i+1];
+					albumes[i+1]=buffer;
+					flagSwap = 1;
+
+				}
+				if(albumes[i].importe == albumes[i+1].importe)
+				{
+					if(strcmp(albumes[i].nombreAlbum,albumes[i+1].nombreAlbum) > 0)
+						{
+							buffer = albumes[i];
+							albumes[i]=albumes[i+1];
+							albumes[i+1]=buffer;
+							flagSwap = 1;
+						}
+				}
+			}
+		}while(flagSwap);
+	}
+	return retorno;
+}
+
+
+/*int ordenamientoAscendentedeTitulos(eAlbum albumes[],int tam)
+{
+	int retorno = -1;
+	int flagSwap;
+	char bufferChar[15];
+
+	if(albumes!=NULL && tam>0)
+	{
+		retorno=1;
+		do
+		{
+		flagSwap = 0;
+		tam--;
+		for(int i=0;i< tam-1; i++)
+		{
+			for(int j=i+1;j< tam; j++)
+			{
+				if(strcmp(albumes[i].nombreAlbum,albumes[j].nombreAlbum) > 0)
+				{
+					strcpy(bufferChar , albumes[j].nombreAlbum);
+					strcpy(albumes[j].nombreAlbum , albumes[i].nombreAlbum);
+					strcpy(albumes[i].nombreAlbum , bufferChar);
+					//bufferChar[i] = albumes[j].nombreAlbum;
+					//albumes[j].nombreAlbum = albumes[i].nombreAlbum;
+					//albumes[i].nombreAlbum = bufferChar;
+				}
+			}
+		}
+		}while(flagSwap);
+	}
+	return retorno;
+}*/
+
+/**\brief Imprime la Lista de Albumes con sus importes.
+ * param album[] La direccion de memoria del array que se le pasa a la funcion.
+ * param tam Es el tamaño del array album[].
+ * param retorno  Retorna 1 si sale todo bien y 0 si No lo logra.
+ */
+int listarAlbumeseImporte(eAlbum albumes[],int tam)
+{
+	int retorno=1;
+	if(albumes!=NULL && tam>0)
+	{
+		ordenamientoAlbum(albumes, tam);
+		printf("Lista de Albumes con sus Importes:\n");
+		for(int i = 0; i < tam; i++)
+		{
+			if(albumes[i].estado==!LIBRE)
+			{
+				printf("  -%10s-%10.2f.\n",albumes[i].nombreAlbum, albumes[i].importe);
+				retorno = 1;
+			}
+		}
+	}
+	return retorno;
+
 }
 /**\brief Genera un ID sin repetirlo.
  * param No recibe nada.

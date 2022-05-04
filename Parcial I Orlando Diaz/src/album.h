@@ -38,13 +38,20 @@ typedef struct{
 	int idTipoArt;
 	int idArtis;
 	int idGenero;
+	int idTipoAlbum;
 	eFecha fechaAlbum;
 }eAlbum;
+typedef struct{
+	int idTipoAlbum;
+	char descripTipoAlb[TAM];
+}eTipoAlbum;
 int inicializarArray(eAlbum album[], int tam);
 int buscarPosicLibre(eAlbum album[], int tam);
 int buscarId(eAlbum album[], int tam, int idBuscar);
-int altaAlbum(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero generos[],int tam2,eTipoArt tiposArt[], int tam3);
-int modificar(eAlbum album[], int tam);
+int altaAlbum(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero generos[],int tam2,eTipoArt tiposArt[],
+		      int tam3, eTipoAlbum tipoAlbum[], int tam4);
+int modificar(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero generos[],int tam2,eTipoArt tiposArt[],
+		      int tam3, eTipoAlbum tipoAlbum[], int tam4);
 int bajaAlbum(eAlbum album[], int tam);
 int imprimirIdAlbum(eAlbum album[],int tam);
 //////////////INFORMENES//////////////////
@@ -69,6 +76,11 @@ int listarImporMaximos(eAlbum albumes[],int tam);
 int ordenamientoAlbum(eAlbum albumes[],int tam);
 //int ordenamientoAscendentedeTitulos(eAlbum albumes[],int tam);
 int listarAlbumeseImporte(eAlbum albumes[],int tam);
+int listarTipoAlbum(eTipoAlbum tipoAlbum[],int tam);
+int listarTipoAlbumConId(eTipoAlbum tipoAlbum[],int tam);
+int listarAlbumesSinVinilo(eAlbum albumes[],int tam);
+int listarAlbumesDeunArtista(eAlbum albumes[],int tam, eTipoArt tipoAlbum[], int tam1);
+
 
 
 #endif /* ALBUM_H_ */

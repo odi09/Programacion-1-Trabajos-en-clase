@@ -16,6 +16,7 @@
 static int IdGenero(void);
 static int IdArtista(void);
 static int IdTipo(void);
+static int IdTipoAbum(void);
 
 /**\brief Harcodea los Genero Musicales.
  * param album[] La direccion de memoria del array que se le pasa a la fucnion.
@@ -61,7 +62,11 @@ int  harcodeoArtista(eArtista lista[], int tam)
 	}
 return retorno;
 }
-
+/**\brief Harcodea los Tipo de Artistas.
+ * param lista[] La direccion de memoria del array que se le pasa a la fucnion.
+ * param tam Es el tamaño del array lista[].
+ * param retorno  Retorna 1 se logra copian todos los datos y 0 si No lo logra.
+ */
 int  harcodeoTipo(eTipoArt lista[], int tam)
 {
 	int retorno =0;
@@ -77,19 +82,57 @@ int  harcodeoTipo(eTipoArt lista[], int tam)
 	}
 return retorno;
 }
+/**\brief Harcodea los Tipo de Albumes.
+ * param tipoAlb[] La direccion de memoria del array que se le pasa a la fucnion.
+ * param tam Es el tamaño del array tipoAlb[].
+ * param retorno  Retorna 1 se logra copian todos los datos y 0 si No lo logra.
+ */
+int harcodeoTipoAlbum(eTipoAlbum tipoAlb[], int tam)
+{
+	int retorno=0;
+	char auxTipoAlbum[][51]={"vinilo","cinta","CD"};
+
+	if(tipoAlb!=NULL && tam>0)
+	{
+		for(int i=0; i<tam; i++)
+		{
+			tipoAlb[i].idTipoAlbum=IdTipoAbum();
+			strncpy(tipoAlb[i].descripTipoAlb, auxTipoAlbum[i], sizeof(tipoAlb[i].descripTipoAlb));
+		}
+		retorno=1;
+	}
+	return retorno;
+}
+/**\brief Funcion estatica. Genera un ID para el Genero.
+ * param retorno  Retorna el ID.
+ */
 static int IdGenero(void)
   {
   	static int contador = 1;
   	return contador++;
   }
+/**\brief Funcion estatica. Genera un ID para el Artista.
+ * param retorno  Retorna el ID.
+ */
  static int IdArtista(void)
    {
    	static int contador = 1;
    	return contador++;
    }
+ /**\brief Funcion estatica. Genera un ID para el Tipo.
+  * param retorno  Retorna el ID.
+  */
  static int IdTipo(void)
     {
     	static int contador = 1;
     	return contador++;
     }
+ /**\brief Funcion estatica. Genera un ID para el Tipo de Album.
+  * param retorno  Retorna el ID.
+  */
+ static int IdTipoAbum(void)
+     {
+     	static int contador = 1;
+     	return contador++;
+     }
 

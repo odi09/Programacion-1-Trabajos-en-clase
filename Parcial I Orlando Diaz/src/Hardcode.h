@@ -11,5 +11,6 @@
 int  harcodeoGenero(eGenero lista[], int tam);
 int  harcodeoArtista(eArtista lista[], int tam);
 int  harcodeoTipo(eTipoArt lista[], int tam);
+int harcodeoTipoAlbum(eTipoAlbum tipoAlb[], int tam);
 
 #endif /* HARDCODE_H_ */

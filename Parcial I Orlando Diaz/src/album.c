@@ -13,6 +13,7 @@
 #include "Hardcode.h"
 #define LIBRE 0 // Si es 0 aun no esta cargado
 #define TAMCHAR 51
+
 static int IdAlbum(void);
 
 /**\brief Inicializa el Array en el compronete ESTADO pone 0 para indicar que esta vacio.
@@ -91,10 +92,10 @@ int buscarId(eAlbum album[], int tam, int idBuscar)
  * param tam3 Es el tamaño del array tiposArt[].
  * param retorno  Retorna 1 si logra dar el Alta y 0 si No lo logra.
  */
-int altaAlbum(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero generos[],int tam2,eTipoArt tiposArt[], int tam3)
+int altaAlbum(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero generos[],int tam2,eTipoArt tiposArt[], int tam3, eTipoAlbum tipoAlbum[], int tam4)
  {
 	 int retorno = 0;
-	 char auxNombre[TAMCHAR];
+	 char auxNombre[tam];
 	 float auxImporte;
 	 int auxDia;
 	 int auxMes;
@@ -102,8 +103,9 @@ int altaAlbum(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero gene
 	 int auxIdArt;
 	 int auxIdGene;
 	 int auxIdtipo;
+	 int auxIdtipoAlb;
 
-	 if(album!=NULL && tam>0)
+	 if(album!=NULL && tam>0 && artistas!=NULL && tam1>0 && generos!=NULL && tam2>0 && tiposArt!=NULL && tam3>0 && tipoAlbum!=NULL && tam4>0)
 	 {
 		 if(pedirCadenaDeSoloLetras(auxNombre, TAMCHAR, 3, "Ingrese Nombre del Album: ", "Error con el nombre de Album que trata de ingresar.\n") == 1)
 			 {
@@ -127,18 +129,25 @@ int altaAlbum(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero gene
 												 {
 													 if(pedirEntero(&auxIdtipo, 1, 15, 3, "Ingrese ID del Tipo de Artista:","Error con el ID que trata de ingresar.\n")==1)
 													 {
-														 strncpy(album->nombreAlbum, auxNombre, sizeof(album->nombreAlbum));
-														 album->importe=auxImporte;
-														 album->fechaAlbum.dia=auxDia;
-														 album->fechaAlbum.mes=auxMes;
-														 album->fechaAlbum.anio=auxAnio;
-														 album->idArtis=auxIdArt;
-														 album->idArtis=auxIdGene;
-														 album->idTipoArt=auxIdtipo;
-														 album->idAlbum=IdAlbum();
-														 album->estado=!LIBRE;
-														 retorno = 1;
-													 }
+														 if(listarTipoAlbumConId(tipoAlbum, tam4)==1)
+														 {
+															 if(pedirEntero(&auxIdtipoAlb, 1, 3, 3, "Ingrese ID del Tipo de Album:","Error con el ID que trata de ingresar.\n")==1)
+															 {
+																 strncpy(album->nombreAlbum, auxNombre, sizeof(album->nombreAlbum));
+																 album->importe=auxImporte;
+																 album->fechaAlbum.dia=auxDia;
+																 album->fechaAlbum.mes=auxMes;
+																 album->fechaAlbum.anio=auxAnio;
+																 album->idArtis=auxIdArt;
+																 album->idArtis=auxIdGene;
+																 album->idTipoArt=auxIdtipo;
+																 album->idTipoAlbum=auxIdtipoAlb;
+																 album->idAlbum=IdAlbum();
+																 album->estado=!LIBRE;
+																 retorno = 1;
+															 }
+														 }
+											     	 }
 												 }
 											 }
 										 }
@@ -157,7 +166,81 @@ int altaAlbum(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero gene
   * param tam Es el tamaño del array album[].
   * param retorno  Retorna 1 se logra Modificar y 0 si No lo logra.
   */
-int modificar(eAlbum album[],int tam)
+
+int modificar(eAlbum album[], int tam, eArtista artistas[],int tam1,eGenero generos[],int tam2,eTipoArt tiposArt[], int tam3, eTipoAlbum tipoAlbum[], int tam4)
+ {
+	 int retorno = 0;
+	 char auxNombre[tam];
+	 float auxImporte;
+	 int auxDia;
+	 int auxMes;
+	 int auxAnio;
+	 int auxIdArt;
+	 int auxIdGene;
+	 int auxIdtipo;
+	 int auxIdtipoAlb;
+	 int auxIdBuscar;
+	 int idAlbum;
+
+	 if(album!=NULL && tam>0 && artistas!=NULL && tam1>0 && generos!=NULL && tam2>0 && tiposArt!=NULL && tam3>0 && tipoAlbum!=NULL && tam4>0)
+	 {
+		 if(pedirEntero(&idAlbum, 1, 100, 3, "Ingrese el ID del Album a Modificar:","Error! El ID que ingresa no es valido\n")==1)
+		 {
+			 auxIdBuscar = buscarId(album,tam, idAlbum);
+
+			 if(pedirCadenaDeSoloLetras(auxNombre, TAMCHAR, 3, "Ingrese Nombre del Album: ", "Error con el nombre de Album que trata de ingresar.\n") == 1)
+				 {
+					 if(pedirFlotante(&auxImporte, 0, 3,"Ingrese el Importe del Album: ","Error con el importe que trata de ingresar.\n")==1)
+					 {
+						 if(pedirEntero(&auxDia, 1, 31, 3, "Ingrese la Fecha del Album.\nDia:","Error con el Dia que trata de ingresar.\n")==1)
+						 {
+							 if(pedirEntero(&auxMes, 1, 12, 3, "Mes:","Error con el Mes que trata de ingresar.\n")==1)
+							 {
+								 if(pedirEntero(&auxAnio, 1900, 2022, 3, "Año:","Error con el Año que trata de ingresar.\n")==1)
+								 {
+									 if(listarArtistasConID(artistas, tam1)==1)
+									 {
+										 if(pedirEntero(&auxIdArt, 1, 15, 3, "Ingrese ID del Artista:","Error con el ID que trata de ingresar.\n")==1)
+										 {
+											 if(listarGeneroConID(generos, tam2)==1)
+											 {
+												 if(pedirEntero(&auxIdGene, 1, 15, 3, "Ingrese ID del Genero:","Error con el ID que trata de ingresar.\n")==1)
+												 {
+													 if(listarTiposArtistaConID(tiposArt, tam3)==1)
+													 {
+														 if(pedirEntero(&auxIdtipo, 1, 15, 3, "Ingrese ID del Tipo de Artista:","Error con el ID que trata de ingresar.\n")==1)
+														 {
+															 if(listarTipoAlbumConId(tipoAlbum, tam4)==1)
+															 {
+																 if(pedirEntero(&auxIdtipoAlb, 1, 3, 3, "Ingrese ID del Tipo de Album:","Error con el ID que trata de ingresar.\n")==1)
+																 {
+																     strncpy(album[auxIdBuscar].nombreAlbum, auxNombre, sizeof(album[auxIdBuscar].nombreAlbum));
+																	 album[auxIdBuscar].importe=auxImporte;
+																	 album[auxIdBuscar].fechaAlbum.dia=auxDia;
+																	 album[auxIdBuscar].fechaAlbum.mes=auxMes;
+																	 album[auxIdBuscar].fechaAlbum.anio=auxAnio;
+																	 album[auxIdBuscar].idArtis=auxIdArt;
+																	 album[auxIdBuscar].estado=!LIBRE;
+																	 retorno = 1;
+																 }
+															 }
+														 }
+													 }
+												 }
+											 }
+										 }
+									 }
+								 }
+							 }
+						 }
+					 }
+				 }
+		 }
+	 }
+	 return retorno;
+ }
+/*
+int modificar(eAlbum album[],int tam,eArtista artistas[],int tam1,eGenero generos[],int tam2,eTipoArt tiposArt[], int tam3, eTipoAlbum tipoAlbum[], int tam4)
 {
 	int retorno=0;
 	int idAlbum;
@@ -206,7 +289,7 @@ int modificar(eAlbum album[],int tam)
 			}
 	}
 	return retorno;
-}
+}*/
 /**\brief Da la Baja un Album que ya esta cargado buscando su ID.
  * param album[] La direccion de memoria del array que se le pasa a la fucnion.
  * param tam Es el tamaño del array album[].
@@ -773,7 +856,81 @@ int listarAlbumeseImporte(eAlbum albumes[],int tam)
 		}
 	}
 	return retorno;
+}
+/**\brief Imprime la Lista de Tipos de Albumes.
+ * param tipoAlbum[] La direccion de memoria del array que se le pasa a la funcion.
+ * param tam Es el tamaño del array tipoAlbum[].
+ * param retorno  Retorna 1 si sale todo bien y 0 si No lo logra.
+ */
+int listarTipoAlbum(eTipoAlbum tipoAlbum[],int tam)
+{
+	int retorno=0;
+	if(tipoAlbum!=NULL && tam>0)
+	{
+		printf("Lista los Tipos de Albumes:\n");
+		for(int i = 0; i < tam; i++)
+		{
+			printf("  -%s.\n",tipoAlbum[i].descripTipoAlb);
+			retorno = 1;
+		}
+		retorno=1;
+	}
+	return retorno;
+}
+/**\brief Imprime la Lista de Tipos de Albumes con su ID.
+ * param tipoAlbum[] La direccion de memoria del array que se le pasa a la funcion.
+ * param tam Es el tamaño del array tipoAlbum[].
+ * param retorno  Retorna 1 si sale todo bien y 0 si No lo logra.
+ */
+int listarTipoAlbumConId(eTipoAlbum tipoAlbum[],int tam)
+{
+	int retorno=0;
+	if(tipoAlbum!=NULL && tam>0)
+	{
+		printf("Lista los Tipos de Albumes:\n");
+		for(int i = 0; i < tam; i++)
+		{
+			printf("  ID %d--%10s.\n",tipoAlbum[i].idTipoAlbum,tipoAlbum[i].descripTipoAlb);
+			retorno = 1;
+		}
+		retorno=1;
+	}
+	return retorno;
+}
+/**\brief Imprime la Lista de Tipos de Albumes con su ID.
+ * param tipoAlbum[] La direccion de memoria del array que se le pasa a la funcion.
+ * param tam Es el tamaño del array tipoAlbum[].
+ * param retorno  Retorna 1 si sale todo bien y 0 si No lo logra.
+ */
+int listarAlbumesSinVinilo(eAlbum albumes[],int tam)
+{
+	int retorno=0;
 
+	if(albumes!=NULL && tam>0)
+		{
+		printf("Lista de Albumes SIN el Vinilo:\n");
+			for(int i = 0; i < tam; i++)
+			{
+				if(albumes[i].estado==!LIBRE)
+				{
+					if(albumes[i].idTipoAlbum!=1)
+					{
+						printf("%s\n",albumes[i].nombreAlbum);
+						retorno = 1;
+					}
+				}
+			}
+		}
+	return retorno;
+}
+int listarAlbumesDeunArtista(eAlbum albumes[],int tam, eTipoArt tipoAlbum[], int tam1)
+{
+	int retorno=0;
+	if(albumes!=NULL && tam>0 && tipoAlbum!=NULL && tam1>0)
+	{
+		printf("Lista de Albumes SIN el Vinilo:\n");
+	}
+	return retorno;
 }
 /**\brief Genera un ID sin repetirlo.
  * param No recibe nada.

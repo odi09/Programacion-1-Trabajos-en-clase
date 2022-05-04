@@ -7,7 +7,6 @@
  Description : Hello World in C, Ansi-style
  ============================================================================
  */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,9 +15,10 @@
 #include "album.h"
 #include "Hardcode.h"
 #define TAMCHAR 51
-#define TAM1 3
+#define TAM1 2
 #define TAM2 15
 #define TAM3 2
+#define TAM4 3
 
 int main(void) {
 	setbuf(stdout, NULL);
@@ -26,6 +26,7 @@ int main(void) {
 	eGenero genero[TAM2];
 	eArtista artista[TAM2];
 	eTipoArt tipo[2];
+	eTipoAlbum tipoAlbum[TAM4];
 	int alta;
 	int direccion;
 	int totalImportes;
@@ -42,10 +43,12 @@ int main(void) {
 		harcodeoGenero(genero, TAM2);
 		harcodeoArtista(artista, TAM2);
 		harcodeoTipo(tipo, 2);
+		harcodeoTipoAlbum(tipoAlbum, TAM4);
+
 
 		do{
-			if(pedirEntero(&opcion, 0, 5, 3, "Ingrese una Opcion:\n1.Dar de Alta un Album.\n2.Modificar un album.\n3.Dar de baja un Album.\n"
-				                             "4.Infomenes.\n5.Listar\n0.Salir.\n","La opcion que ingreso no es correcta.")!=1)
+			if(pedirEntero(&opcion, 0, 6, 3, "Ingrese una Opcion:\n1.Dar de Alta un Album.\n2.Modificar un album.\n3.Dar de baja un Album.\n"
+				                             "4.Infomenes.\n5.Listar.\n6.Parte DOS parcial.\n0.Salir.\n","La opcion que ingreso no es correcta.")!=1)
 			{
 				printf("ERROR!! Algo salio mal.\n");
 			}
@@ -55,7 +58,7 @@ int main(void) {
 				direccion = buscarPosicLibre(album, TAM1);
 				if(direccion>=0)
 				{
-					alta=altaAlbum(&album[direccion],TAMCHAR,artista,TAM2,genero,TAM2,tipo,TAM3);
+					alta=altaAlbum(&album[direccion],TAMCHAR,artista,TAM2,genero,TAM2,tipo,TAM3,tipoAlbum,TAM4);
 					if(alta == 1)
 					{
 						flag = 1;
@@ -69,7 +72,7 @@ int main(void) {
 			case 2:
 				if(flag ==1 && (imprimirIdAlbum(album,TAM1)==1))
 				{
-					if(modificar(album, TAM1)==1)
+					if(modificar(album, TAM1, artista,TAM2,genero,TAM2,tipo,TAM3,tipoAlbum,TAM4)==1)
 					{
 						printf("Lo que se cargo es %s\n", album[direccion].nombreAlbum);
 						printf("Lo que se cargo como importe es %.2f\n", album[direccion].importe);
@@ -186,6 +189,17 @@ int main(void) {
 				{
 					printf("No hay Albumes para imprimir.\n");
 				}
+				break;
+			case 6:
+				if(listarTipoAlbum(tipoAlbum,TAM4)!=1)
+				{
+					printf("No se pudo imprimir los Tipos de Albumes.\n");
+				}
+				if((listarAlbumesSinVinilo(album,TAM1)!=1))
+				{
+					printf("No se pudo imprimir los lista de Albumes.\n");
+				}
+
 				break;
 			}
 		}while(opcion != 0);
